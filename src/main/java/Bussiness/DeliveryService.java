@@ -1,5 +1,7 @@
 package Bussiness;
 
+import Bussiness.Validators.ClientValidator;
+import Bussiness.Validators.Validator;
 import Data.Importer;
 import Model.*;
 
@@ -8,11 +10,18 @@ import java.io.Serializable;
 import java.util.*;
 
 public class DeliveryService implements Serializable, IDeliveryServiceProcessing {
+    private static DeliveryService singleInstance = new DeliveryService();
+    public static DeliveryService getInstance() {
+        return singleInstance;
+    }
+
     private List<MenuItem> menuItems = new ArrayList<>();
     private HashMap<Order, List<MenuItem>> orders = new HashMap<>();
     private List<Client> clients = new ArrayList<>();
 
     Bill bill = new Bill();
+
+    ClientValidator validator = ClientValidator.getValidator();
 
     // Admin tasks
     @Override
@@ -102,6 +111,18 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
     @Override
     public Set<Order> getOrders() {
         return orders.keySet();
+    }
+
+    public List<Client> getClients(){
+        return clients;
+    }
+
+    public void createUser(User user){
+        if(user instanceof Client){
+            validator.validate((Client) user);
+            clients.add((Client) user);
+            user.setId(clients.indexOf(user) + 1);
+        }
     }
 
 }

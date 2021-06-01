@@ -11,7 +11,8 @@ public class Start {
         //LoginView start = new LoginGUI();
         Serializator serializator = new Serializator();
 
-        DeliveryService deliveryService = null;
+        DeliveryService deliveryService = DeliveryService.getInstance();
+
         try {
             deliveryService = serializator.importData();
         } catch (IOException e) {
@@ -47,7 +48,7 @@ public class Start {
 
         Order order = new Order();
 
-        Client client = new Client("John", "Doe", "Str Ceahlau 77", "0712345678");
+        Client client = new Client("user1", "password", "John", "Doe", "Str Ceahlau 77", "0712345678");
 
         deliveryService.newOrder(client, order, orderedProducts);
         try {
