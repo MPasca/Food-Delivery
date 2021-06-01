@@ -1,9 +1,9 @@
 package Bussiness;
 
-import Data.BaseProduct;
-import Data.Client;
-import Data.MenuItem;
-import Data.Order;
+import Model.BaseProduct;
+import Model.Client;
+import Model.MenuItem;
+import Model.Order;
 
 import java.io.IOException;
 import java.util.List;

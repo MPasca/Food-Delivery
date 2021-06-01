@@ -1,20 +1,19 @@
 package Bussiness;
 
-import Data.*;
+import Model.*;
 
 import javax.swing.*;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class Bill {
-    private static int id;
-
+public class Bill implements Serializable {
     public void printBill(Order order, Client client, List<MenuItem> orderedItems){
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss, dd/MM/yyyy");
-            FileWriter billWriter = new FileWriter("Bill #" + id + ".txt");
+            FileWriter billWriter = new FileWriter("Bill #" + order.getId() + ".txt");
 
             billWriter.write("Order #" + order.getId() + "\n");
             billWriter.write(formatter.format(order.getDate()) + "\n");

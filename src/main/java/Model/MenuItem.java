@@ -1,6 +1,8 @@
-package Data;
+package Model;
 
-public abstract class MenuItem {
+import java.io.Serializable;
+
+public abstract class MenuItem implements Serializable {
     protected int id;
 
     protected String title;

@@ -1,15 +1,13 @@
 package Bussiness;
 
-import Data.*;
-import Data.MenuItem;
+import Data.Importer;
+import Model.*;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
-public class DeliveryService implements IDeliveryServiceProcessing{
+public class DeliveryService implements Serializable, IDeliveryServiceProcessing {
     private List<MenuItem> menuItems = new ArrayList<>();
     private HashMap<Order, List<MenuItem>> orders = new HashMap<>();
     private List<Client> clients = new ArrayList<>();
@@ -105,4 +103,5 @@ public class DeliveryService implements IDeliveryServiceProcessing{
     public Set<Order> getOrders() {
         return orders.keySet();
     }
+
 }

@@ -1,9 +1,9 @@
-package Data;
+package Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Client extends User{
+public class Client extends User {
     private int id;
     private String firstName;
     private String lastName;

@@ -1,12 +1,30 @@
 import Bussiness.DeliveryService;
-import Data.*;
+import Data.Serializator;
+import Model.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Start {
     public static void main(String [] args){
         //LoginView start = new LoginGUI();
+        Serializator serializator = new Serializator();
+
+        DeliveryService deliveryService = null;
+        try {
+            deliveryService = serializator.importData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for(MenuItem prod: deliveryService.fetchMenuItems()){
+            System.out.println(prod.toString());
+        }
+
+        List<BaseProduct> productList = deliveryService.importProducts();
 
         BaseProduct prod1 = new BaseProduct("Fresh Corn Tortillas",3.75,23, 1, 2, 61, 79);
         prod1.setId(1);
@@ -23,12 +41,6 @@ public class Start {
         //System.out.println(prod1);
         //System.out.println(prod2);
 
-        DeliveryService deliveryService = new DeliveryService();
-        List<BaseProduct> productList = deliveryService.importProducts();
-
-        for(BaseProduct prod: productList){
-            System.out.println(prod.toString());
-        }
         List<MenuItem> orderedProducts = new ArrayList<>();
         orderedProducts.add(productList.get(5));
         orderedProducts.add(productList.get(10));
@@ -38,6 +50,10 @@ public class Start {
         Client client = new Client("John", "Doe", "Str Ceahlau 77", "0712345678");
 
         deliveryService.newOrder(client, order, orderedProducts);
-
+        try {
+            serializator.exportData(deliveryService);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

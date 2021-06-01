@@ -1,8 +1,9 @@
-package Data;
+package Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Order {
+public class Order implements Serializable {
     private LocalDateTime date;
     private boolean isPlaced = false;
 

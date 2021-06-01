@@ -1,4 +1,4 @@
-package Data;
+package Model;
 
 public class Admin extends User{
     private final static String username = "admin";

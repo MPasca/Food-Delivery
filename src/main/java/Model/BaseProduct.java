@@ -1,6 +1,6 @@
-package Data;
+package Model;
 
-public class BaseProduct extends MenuItem {
+public class BaseProduct extends MenuItem  {
     public BaseProduct(String title, double rating, int calories, int protein, int fat, int sodium, double price) {
         super(title, price, rating, calories, protein, fat, sodium);
     }
