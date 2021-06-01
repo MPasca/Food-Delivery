@@ -4,7 +4,9 @@ import Bussiness.DeliveryService;
 import Data.Serialization;
 import GUI.ClientView;
 import GUI.LoginView;
+import Model.Admin;
 import Model.Client;
+import Model.User;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -38,7 +40,7 @@ public class LoginController implements Controller{
     }
 
     @Override
-    public Client checkInput() throws Exception {
+    public User checkInput() throws Exception {
         String username = loginView.txtUsername.getText();
         String password = loginView.txtPassword.getText();
         if(username.equals("")){
@@ -48,6 +50,12 @@ public class LoginController implements Controller{
         if(password.equals("")){
             JOptionPane.showMessageDialog(null, "The password is missing", "Error", JOptionPane.ERROR_MESSAGE);
             throw new Exception("Password field is empty");
+        }
+
+        if(username.equals("admin")){
+            if(password.equals("admin")){
+                return new Admin();
+            }
         }
 
         List<Client> clients = deliveryService.getClients();
@@ -75,12 +83,16 @@ public class LoginController implements Controller{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Client currentClient = null;
+            User currentUser= null;
             try {
-                currentClient = checkInput();
-                if(currentClient != null){
+                currentUser = checkInput();
+                if(currentUser != null){
                     loginView.frameMain.setVisible(false);
-                    ClientController.getInstance().clientView.frameClient.setVisible(true);;
+                    if(currentUser instanceof Client){
+                        ClientController.getInstance().clientView.frameClient.setVisible(true);
+                    }else if(currentUser instanceof Admin){
+                        AdminController.getInstance().adminView.frameAdmin.setVisible(true);
+                    }
                 }
 
             } catch (Exception exception) {

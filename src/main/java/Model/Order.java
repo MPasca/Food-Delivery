@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -34,7 +35,7 @@ public class Order implements Serializable {
         isPlaced = true;
     }
 
-    public LocalDateTime getDate(){
+    public LocalDateTime getDateTime(){
         if(isPlaced){
             return date;
         }
@@ -53,5 +54,9 @@ public class Order implements Serializable {
 
     public LocalTime getTime() {
         return LocalTime.of(date.getHour(), date.getMinute(), date.getSecond());
+    }
+
+    public LocalDate getDate() {
+        return LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
     }
 }

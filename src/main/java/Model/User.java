@@ -27,4 +27,7 @@ public abstract class User implements Serializable {
         return password;
     }
 
+    public int getNumberOfOrders() {
+        return 0;
+    }
 }

@@ -3,7 +3,12 @@ package GUI;
 import javax.swing.*;
 
 public class AdminView {
-    JFrame frameAdmin = new JFrame();
+    private static AdminView adminView = new AdminView();
+    public static AdminView getInstance(){
+        return adminView;
+    }
+
+    public JFrame frameAdmin = new JFrame();
 
     // ----- main Panel
     JPanel panelMain = new JPanel();
@@ -39,4 +44,9 @@ public class AdminView {
 
     JComboBox cmbOptions = new JComboBox();
     JTable tableReport = new JTable();
+
+    public AdminView(){
+        frameAdmin.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frameAdmin.setSize(500, 600);
+    }
 }

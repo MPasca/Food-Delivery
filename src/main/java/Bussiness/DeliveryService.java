@@ -1,12 +1,12 @@
 package Bussiness;
 
 import Bussiness.Validators.ClientValidator;
-import Bussiness.Validators.Validator;
 import Data.Importer;
 import Model.*;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -90,7 +90,28 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
         return getOrders().stream().filter(t-> t.getTime().isAfter(time[0]) ).filter(t->t.getTime().isBefore(time[1])).collect(toList());
     }
 
+    public List<MenuItem> generateReportByTimesOrdered(int numberOfOrders){
+        List<MenuItem> filteredList = new ArrayList<>();
+        return  menuItems.stream().filter(m->m.getTimesOrdered() >= numberOfOrders).collect(toList());
+    }
 
+    public List<Client> generateClientsReport(int count, float value){
+        List<Client> filteredClients = new ArrayList<>();
+        orders.keySet().stream().filter(entry-> entry.getTotalPrice() >= value).forEach(e-> filteredClients.add(findClientById(e.getClientId())));
+        return filteredClients.stream().distinct().filter(e-> e.getNumberOfOrders() >= count).collect(toList());
+    }
+
+    public List<MenuItem> generateReportByDateAndTimesOrdered(LocalDate date, int numberOfTimes){
+        List<MenuItem> filteredList = new ArrayList<>();
+        List<MenuItem> result = new ArrayList<>();
+        orders.entrySet().stream().filter(entry-> entry.getKey().getDate().isAfter(date)).forEach(e->e.getValue().stream().filter(k->k.getTimesOrdered() >= numberOfTimes).forEach(k->filteredList.add(k)));
+        for(MenuItem item : filteredList){
+            if(!result.contains(item)){
+                result.add(item);
+            }
+        }
+        return result;
+    }
 
 
     // Client tasks
@@ -113,6 +134,15 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
 
 
     // other methods
+    public Client findClientById(int id){
+        for(Client c: clients){
+            if(c.getId() == id){
+                return c;
+            }
+        }
+        return null;
+    }
+
     @Override
     public List<MenuItem> fetchMenuItems() {
         return menuItems;
