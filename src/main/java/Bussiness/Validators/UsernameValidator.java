@@ -4,9 +4,10 @@ import Bussiness.DeliveryService;
 import Model.Client;
 
 import javax.swing.*;
+import java.io.Serializable;
 import java.util.List;
 
-class UsernameValidator {
+class UsernameValidator implements Serializable {
     private static UsernameValidator singleInstance = new UsernameValidator();
 
     public static UsernameValidator getValidator() {

@@ -1,6 +1,8 @@
 package Bussiness.Validators;
 
-public interface Validator<T>{
+import java.io.Serializable;
+
+public interface Validator<T> extends Serializable {
     void validate(T t);
 }
 

@@ -1,5 +1,6 @@
 import Bussiness.DeliveryService;
-import Data.Serializator;
+import Data.Serialization;
+import GUI.Controller.LoginController;
 import Model.*;
 
 import java.io.IOException;
@@ -8,18 +9,19 @@ import java.util.List;
 
 public class Start {
     public static void main(String [] args){
-        //LoginView start = new LoginGUI();
-        Serializator serializator = new Serializator();
+        Serialization serialization = Serialization.getInstance();
 
         DeliveryService deliveryService = DeliveryService.getInstance();
 
         try {
-            deliveryService = serializator.importData();
+            deliveryService = serialization.importData();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        LoginController.getInstance();
 
         for(MenuItem prod: deliveryService.fetchMenuItems()){
             System.out.println(prod.toString());
@@ -50,9 +52,8 @@ public class Start {
 
         Client client = new Client("user1", "password", "John", "Doe", "Str Ceahlau 77", "0712345678");
 
-        deliveryService.newOrder(client, order, orderedProducts);
         try {
-            serializator.exportData(deliveryService);
+            serialization.exportData(deliveryService);
         } catch (IOException e) {
             e.printStackTrace();
         }

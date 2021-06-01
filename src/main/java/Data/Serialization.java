@@ -4,7 +4,12 @@ import Bussiness.DeliveryService;
 
 import java.io.*;
 
-public class Serializator implements Serializable {
+public class Serialization implements Serializable {
+    private static Serialization serialization = new Serialization();
+    public static Serialization getInstance(){
+        return serialization;
+    }
+
     FileOutputStream dataFile;
     FileInputStream inDataFile;
     ObjectOutputStream outStream;

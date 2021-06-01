@@ -65,4 +65,8 @@ public abstract class MenuItem implements Serializable {
     }
 
     public abstract String toString();
+
+    public abstract boolean getTimesOrdered(){
+
+    }
 }

@@ -7,7 +7,10 @@ import Model.*;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 public class DeliveryService implements Serializable, IDeliveryServiceProcessing {
     private static DeliveryService singleInstance = new DeliveryService();
@@ -82,6 +85,13 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
     public void generateReports() {
 
     }
+
+    public List<Order> generateReportByTimeInterval( LocalTime[] time) {
+        return getOrders().stream().filter(t-> t.getTime().isAfter(time[0]) ).filter(t->t.getTime().isBefore(time[1])).collect(toList());
+    }
+
+
+
 
     // Client tasks
     @Override

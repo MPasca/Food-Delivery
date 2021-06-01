@@ -2,6 +2,7 @@ package Model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Order implements Serializable {
     private LocalDateTime date;
@@ -50,4 +51,7 @@ public class Order implements Serializable {
         return totalPrice;
     }
 
+    public LocalTime getTime() {
+        return LocalTime.of(date.getHour(), date.getMinute(), date.getSecond());
+    }
 }
