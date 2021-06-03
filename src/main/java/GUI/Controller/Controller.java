@@ -29,9 +29,8 @@ public interface Controller {
             int confirmed = JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to quit?", "Confirm quit", JOptionPane.YES_NO_OPTION);
             if (confirmed == JOptionPane.YES_OPTION) {
                 try {
-                    Serialization.getInstance().exportData(DeliveryService.getInstance());
-                    System.out.println("serialization ended");
-                } catch (IOException e) {
+                    Serialization.getInstance().exportData(Serialization.getInstance().importData());
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 System.exit(0);

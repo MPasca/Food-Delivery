@@ -33,6 +33,10 @@ public class DeliveryService extends Observable implements Serializable, IDelive
     // Admin tasks
     @Override
     public List<BaseProduct> importProducts() {
+        String neededFile = "products.csv";
+
+        assert neededFile.isEmpty() == false : "Error in passing file as a parameter0";
+
         Importer importer = new Importer();
         List<BaseProduct> importedItems = new ArrayList<>();
 
@@ -42,12 +46,13 @@ public class DeliveryService extends Observable implements Serializable, IDelive
             e.printStackTrace();
         }
 
-        if(!importedItems.isEmpty()){
-            for(int i = 1; i <= importedItems.size(); i++){
-                importedItems.get(i-1).setId(i);
-                menuItems.add(importedItems.get(i-1));
-            }
+        for(int i = 1; i <= importedItems.size(); i++){
+            importedItems.get(i-1).setId(i);
+            menuItems.add(importedItems.get(i-1));
         }
+
+        assert isWellFormed() : "Error in importing products.";
+
         return importedItems;
     }
 
@@ -167,6 +172,38 @@ public class DeliveryService extends Observable implements Serializable, IDelive
             }
         }
         return null;
+    }
+
+    private boolean isWellFormed(){
+        List<Integer> idList = new ArrayList<>();
+        List<Integer> menuIds = new ArrayList<>();
+        List<String> userIds = new ArrayList<>();
+
+        for(Order order : orders.keySet()){
+            if(!idList.contains(order.getId())){
+                idList.add(order.getId());
+            }else{
+                return false;
+            }
+        }
+
+        for(MenuItem menuItem : menuItems){
+            if(!menuIds.contains(menuItem.getId())){
+                menuIds.add(menuItem.getId());
+            }else{
+                return false;
+            }
+        }
+
+        for(Client c : clients){
+            if(!userIds.contains(c.getUsername())){
+                userIds.add(c.getUsername());
+            }else {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

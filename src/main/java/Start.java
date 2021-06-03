@@ -15,7 +15,6 @@ public class Start {
 
         DeliveryService deliveryService = DeliveryService.getInstance();
 
-        // local variable - THAT'S FUCKNG WHY
         try {
             deliveryService = serialization.importData();
         } catch (IOException e) {
