@@ -21,7 +21,7 @@ public class AdminView {
 
     public JPanel panelMenu = new JPanel(new GridLayout(2, 2));
         public JButton btnManage = new JButton("Manage products");      // listener
-        public JButton btnMenu = new JButton("Create menu");
+        public JButton btnMenu = new JButton("Create menu");            // listener
         public JButton btnReport = new JButton("Generate reports");
         public JButton btnLogout = new JButton("Log out");              // listener
 
@@ -35,15 +35,21 @@ public class AdminView {
 
         JPanel panelManageButtons = new JPanel(new GridLayout(2, 2));
             public JButton btnAdd = new JButton("Add product");         // listener
-            public JButton btnImport = new JButton("Import products");
+            public JButton btnImport = new JButton("Import products");  // listener
             public JButton btnRemove = new JButton("Remove product");   // listener
             public JButton btnModify = new JButton("Modify product");   // listener
 
 
     // ----- create menu Panel
     public JPanel panelCompProd = new JPanel();                                 // not visible
-        JLabel lblCompProd = new JLabel("Create menu");
-        public JButton btnCreate = new JButton("Create");
+        JLabel lblCompProd = new JLabel("Add order");
+        JPanel panelId = new JPanel();
+            JLabel lblId = new JLabel("Id:");
+            public JComboBox<Integer> cmbId = new JComboBox<>();
+        public JTextField txtCompProdTitle = new JTextField("title");
+        public JTextField txtCompProdPrice = new JTextField("price");
+        public JButton btnAddToComp = new JButton("Add product");
+        public JButton btnCreate = new JButton("Place order");              // listener
 
     // ----- add Product Panel                                                  // not visible
     public JPanel panelAdd = new JPanel();
@@ -56,13 +62,13 @@ public class AdminView {
         public JTextField txtFat = new JTextField("Fat");
         public JTextField txtSodium = new JTextField("Sodium");
 
-        public JButton btnAddProduct = new JButton("Add");
+        public JButton btnAddProduct = new JButton("Add");                  // listener
 
     // ----- remove Product Panel                                               // not visible
     public JPanel panelRemove = new JPanel();
         JLabel lblRemove = new JLabel("Remove Product");
         public JTextField txtRemove = new JTextField("product id");
-        public JButton btnRemoveProduct = new JButton("Remove");
+        public JButton btnRemoveProduct = new JButton("Remove");            // listener
 
     // ----- add Modify Panel                                                  // not visible
     public JPanel panelModify = new JPanel();
@@ -76,17 +82,20 @@ public class AdminView {
         public JTextField txtModFat = new JTextField("Fat");
         public JTextField txtModSodium = new JTextField("Sodium");
 
-    public JButton btnModifyProduct = new JButton("Modify");
+    public JButton btnModifyProduct = new JButton("Modify");                // listener
 
     // ----- generate reports Panel
     public JPanel panelReport = new JPanel();                                   // not visible
+        JLabel lblReport = new JLabel("Generate reports");
+        public JTextField txtTimesOrdered = new JTextField("times ordered");
+        public JComboBox cmbOptions = new JComboBox();
+        public JButton btnGenerateReport = new JButton("Generate report");
+        public JTextField txtMinPrice = new JTextField("minimal order value");
+        public JTextField txtTimeBegin = new JTextField("start time");
+        public JTextField txtTimeEnd = new JTextField("end time");
+        public JTextField txtDate = new JTextField("date");
 
-    JLabel lblReport = new JLabel("Generate reports");
-
-    public JComboBox cmbOptions = new JComboBox();
-    public JTable tableReport = new JTable();
-
-    public Elements elements = new Elements();
+        public Elements elements = new Elements();
 
     public AdminView(){
 
@@ -221,7 +230,6 @@ public class AdminView {
         panelRemove.add(txtRemove);
             panelRemove.add(new JLabel(" "));
         panelRemove.add(btnRemoveProduct);
-            panelRemove.add(new JLabel(" "));
         panelRemove.setBackground(elements.colours.get(4));
         panelRemove.setLayout(new BoxLayout(panelRemove, BoxLayout.Y_AXIS));
 
@@ -287,6 +295,102 @@ public class AdminView {
 
         panelModify.setVisible(false);
 
+// ------------------------ CREATE COMPOSITE ITEM
+        btnAddToComp.setFont(elements.fonts.get(0));
+        btnAddToComp.setForeground(elements.colours.get(3));
+
+        btnCreate.setFont(elements.fonts.get(0));
+        btnCreate.setForeground(elements.colours.get(3));
+
+        lblCompProd.setForeground(elements.colours.get(1));
+        lblCompProd.setFont(elements.fonts.get(1));
+        lblCompProd.setAlignmentX(0.5f);
+
+        panelId.setBackground(elements.colours.get(4));
+            lblId.setFont(elements.fonts.get(0));
+            lblId.setForeground(elements.colours.get(1));
+            cmbId.setFont(elements.fonts.get(0));
+            cmbId.setForeground(elements.colours.get(3));
+        panelId.add(lblId);
+        panelId.add(cmbId);
+
+        txtCompProdTitle.setFont(elements.fonts.get(0));
+        txtCompProdTitle.setColumns(30);
+        txtCompProdTitle.setMaximumSize(new Dimension(200, 20));
+
+        txtCompProdPrice.setFont(elements.fonts.get(0));
+        txtCompProdPrice.setColumns(30);
+        txtCompProdPrice.setMaximumSize(new Dimension(200, 20));
+
+        panelCompProd.setBackground(elements.colours.get(4));
+            panelCompProd.add(lblAdd);
+                panelCompProd.add(new JLabel(" "));
+            panelCompProd.add(panelId);
+                panelCompProd.add(new JLabel(" "));
+            panelCompProd.add(btnAddToComp);
+                panelCompProd.add(new JLabel(" "));
+            panelCompProd.add(txtCompProdTitle);
+                panelCompProd.add(new JLabel(" "));
+            panelCompProd.add(txtCompProdPrice);
+                panelCompProd.add(new JLabel(" "));
+            panelCompProd.add(btnCreate);
+        panelCompProd.setBorder(new EmptyBorder(40, 30, 40, 30));
+        panelCompProd.setLayout(new BoxLayout(panelCompProd, BoxLayout.Y_AXIS));
+
+        panelCompProd.setVisible(false);
+
+// ------------------------ GENERATE REPORTS
+        btnGenerateReport.setFont(elements.fonts.get(0));
+        btnGenerateReport.setForeground(elements.colours.get(3));
+
+        lblReport.setForeground(elements.colours.get(1));
+        lblReport.setFont(elements.fonts.get(1));
+        lblReport.setAlignmentX(0.5f);
+
+        txtTimesOrdered.setFont(elements.fonts.get(0));
+        txtTimesOrdered.setColumns(30);
+        txtTimesOrdered.setMaximumSize(new Dimension(200, 20));
+
+        txtMinPrice.setFont(elements.fonts.get(0));
+        txtMinPrice.setColumns(30);
+        txtMinPrice.setMaximumSize(new Dimension(200, 20));
+
+        txtTimeBegin.setFont(elements.fonts.get(0));
+        txtTimeBegin.setColumns(30);
+        txtTimeBegin.setMaximumSize(new Dimension(200, 20));
+
+        txtTimeEnd.setFont(elements.fonts.get(0));
+        txtTimeEnd.setColumns(30);
+        txtTimeEnd.setMaximumSize(new Dimension(200, 20));
+
+        txtDate.setFont(elements.fonts.get(0));
+        txtDate.setColumns(30);
+        txtDate.setMaximumSize(new Dimension(200, 20));
+
+        cmbOptions.setFont(elements.fonts.get(0));
+        cmbOptions.setForeground(elements.colours.get(3));
+
+        panelReport.setBackground(elements.colours.get(4));
+            panelReport.add(lblReport);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(txtTimesOrdered);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(txtMinPrice);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(txtTimeBegin);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(txtTimeEnd);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(txtDate);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(cmbOptions);
+                panelReport.add(new JLabel(" "));
+            panelReport.add(btnGenerateReport);
+        panelReport.setBorder(new EmptyBorder(40, 30, 40, 30));
+        panelReport.setLayout(new BoxLayout(panelReport, BoxLayout.Y_AXIS));
+
+        panelCompProd.setVisible(false);
+
 // ------------------------ MAIN FRAME
         btnBack.setFont(elements.fonts.get(0));
         btnBack.setForeground(elements.colours.get(3));
@@ -298,6 +402,8 @@ public class AdminView {
         panelMain.add(panelAdd);
         panelMain.add(panelRemove);
         panelMain.add(panelModify);
+        panelMain.add(panelCompProd);
+        panelMain.add(panelReport);
 
         panelMain.add(btnBack);
         panelMain.setBorder(new EmptyBorder(20, 0, 20, 0));

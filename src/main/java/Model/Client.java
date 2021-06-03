@@ -55,4 +55,13 @@ public class Client extends User {
     public String getTelephoneNumber() {
         return telephoneNumber;
     }
+
+    public String toString(){
+        String string = "Client #" + id + "\n";
+        string += firstName + " " + lastName + "\n";
+        string += "telephone: " + telephoneNumber + "\n";
+        string += "address: " + deliveryAddress + "\n";
+        string += "times ordered: " + timesOrdered;
+        return string;
+    }
 }

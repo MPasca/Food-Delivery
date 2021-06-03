@@ -59,8 +59,6 @@ public class ClientController implements Controller{
     public class AddListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("in add listener");
-            System.out.println(clientView.cmbId.getSelectedItem());
             newOrder.add(DeliveryService.getInstance().findById((Integer) clientView.cmbId.getSelectedItem()));
 
         }

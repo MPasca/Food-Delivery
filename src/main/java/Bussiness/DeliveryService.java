@@ -7,6 +7,7 @@ import Model.MenuItem;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -74,13 +75,15 @@ public class DeliveryService extends Observable implements Serializable, IDelive
 
     @Override
     public int deleteProduct(int toDelete) {
-        menuItems.remove(toDelete);
+        menuItems.remove(findById(toDelete));
         return toDelete;
     }
 
     @Override
     public int modifyProduct(int idToModify, MenuItem toModify) {
-        menuItems.add(idToModify, toModify);
+        int index = menuItems.lastIndexOf(findById(idToModify));
+        toModify.setId(idToModify);
+        menuItems.add(index, toModify);
         return idToModify;
     }
 
@@ -90,20 +93,36 @@ public class DeliveryService extends Observable implements Serializable, IDelive
     }
 
     public List<Order> generateReportByTimeInterval( LocalTime timeBegin, LocalTime timeEnd) {
-        return getOrders().stream().filter(t -> t.getTime().isAfter(timeBegin) ).filter(t -> t.getTime().isBefore(timeEnd)).collect(toList());
+        String title = "REPORT BY TIME INTERVAL: " + timeBegin.toString() + " to " + timeEnd.toString();
+        List<Order> foundOrders = getOrders().stream().filter(t -> t.getTime().isAfter(timeBegin) ).filter(t -> t.getTime().isBefore(timeEnd)).collect(toList());
+
+        ReportGenerator.getInstance().generateReportByTimeInterval(title, foundOrders);
+        return foundOrders;
     }
 
     public List<MenuItem> generateReportByTimesOrdered(int minTimesOrdered){
-        return menuItems.stream().filter(m->m.getTimesOrdered() >= minTimesOrdered).collect(toList());
+        String title = "REPORT BY TIMES ORDERED - higher than " + minTimesOrdered;
+        List<MenuItem> foundItems = menuItems.stream().filter(m->m.getTimesOrdered() >= minTimesOrdered).collect(toList());
+
+        ReportGenerator.getInstance().generateReportByTimesOrdered(title, foundItems);
+        return foundItems;
     }
 
-    public List<Client> generateClientsReport(int minOrders, float minPrice){
+    public List<Client> generateClientsReport(int minOrders, Double minPrice){
+        String title = "CLIENTS REPORT - times ordered higher than " + minOrders + " with a minimum value of " + minPrice;
+
         List<Client> filteredClients = new ArrayList<>();
+
         orders.keySet().stream().filter(entry -> entry.getTotalPrice() >= minPrice).forEach(e -> filteredClients.add(findClientById(e.getClientId())));
-        return filteredClients.stream().distinct().filter(e -> e.getNumberOfOrders() >= minOrders).collect(toList());
+        List<Client> foundClients = filteredClients.stream().distinct().filter(e -> e.getNumberOfOrders() >= minOrders).collect(toList());
+
+        ReportGenerator.getInstance().generateClientsReport(title, foundClients);
+        return foundClients;
     }
 
     public List<MenuItem> generateReportByDateAndTimesOrdered(LocalDate date, int numberOfTimes){
+        String title = "REPORT ORDERED ITEMS BY DATE AND TIME AND TIMES ORDERED";
+
         List<MenuItem> filteredList = new ArrayList<>();
         List<MenuItem> result = new ArrayList<>();
         orders.entrySet().stream().filter(entry -> entry.getKey().getDate().isAfter(date)).forEach(e -> e.getValue().stream().filter(k -> k.getTimesOrdered() >= numberOfTimes).forEach(k -> filteredList.add(k)));
@@ -112,6 +131,8 @@ public class DeliveryService extends Observable implements Serializable, IDelive
                 result.add(item);
             }
         }
+
+        ReportGenerator.getInstance().generateReportByDateAndTimesOrdered(title, result);
         return result;
     }
 

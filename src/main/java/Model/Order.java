@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Order implements Serializable {
     private LocalDateTime date;
@@ -63,5 +64,16 @@ public class Order implements Serializable {
     @Override
     public int hashCode(){
         return orderId;
+    }
+
+    public String toString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss, dd/MM/yyyy");
+
+        String result = "Order no #" + orderId + "\n";
+        result += formatter.format(date) + "\n";
+        result += "Client id #" + clientId + "\n";
+        result += "Total price: " + totalPrice + "\n";
+
+        return result;
     }
 }

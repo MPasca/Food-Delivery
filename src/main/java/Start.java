@@ -24,7 +24,11 @@ public class Start {
             e.printStackTrace();
         }
 
+        DeliveryService.getInstance().importProducts();
+        DeliveryService.getInstance().generateReportByTimesOrdered(0);
+
         LoginController.getInstance();
+
         //AdminController.getInstance();
         //ClientController.getInstance();
     }
