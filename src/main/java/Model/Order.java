@@ -59,4 +59,9 @@ public class Order implements Serializable {
     public LocalDate getDate() {
         return LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
     }
+
+    @Override
+    public int hashCode(){
+        return orderId;
+    }
 }

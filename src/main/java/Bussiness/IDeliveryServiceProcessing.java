@@ -21,7 +21,7 @@ public interface IDeliveryServiceProcessing {
     void generateReports();
 
     // Client methods
-    int newOrder(Client client, Order order, List<MenuItem> orderedProducts);
+    int newOrder(Client client, List<MenuItem> orderedProducts);
 
     List<MenuItem> fetchMenuItems();
 

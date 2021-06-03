@@ -43,7 +43,7 @@ public class SignupView {
     public SignupView(){
         Elements elements = new Elements();
         frameSignup.setSize(500, 600);
-        //frameSignup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameSignup.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         panelMain.setBackground(elements.colours.get(4));
 

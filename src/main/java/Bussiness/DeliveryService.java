@@ -3,16 +3,19 @@ package Bussiness;
 import Bussiness.Validators.ClientValidator;
 import Data.Importer;
 import Model.*;
+import Model.MenuItem;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public class DeliveryService implements Serializable, IDeliveryServiceProcessing {
+public class DeliveryService extends Observable implements Serializable, IDeliveryServiceProcessing {
     private static DeliveryService singleInstance = new DeliveryService();
     public static DeliveryService getInstance() {
         return singleInstance;
@@ -86,25 +89,24 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
 
     }
 
-    public List<Order> generateReportByTimeInterval( LocalTime[] time) {
-        return getOrders().stream().filter(t-> t.getTime().isAfter(time[0]) ).filter(t->t.getTime().isBefore(time[1])).collect(toList());
+    public List<Order> generateReportByTimeInterval( LocalTime timeBegin, LocalTime timeEnd) {
+        return getOrders().stream().filter(t -> t.getTime().isAfter(timeBegin) ).filter(t -> t.getTime().isBefore(timeEnd)).collect(toList());
     }
 
-    public List<MenuItem> generateReportByTimesOrdered(int numberOfOrders){
-        List<MenuItem> filteredList = new ArrayList<>();
-        return  menuItems.stream().filter(m->m.getTimesOrdered() >= numberOfOrders).collect(toList());
+    public List<MenuItem> generateReportByTimesOrdered(int minTimesOrdered){
+        return menuItems.stream().filter(m->m.getTimesOrdered() >= minTimesOrdered).collect(toList());
     }
 
-    public List<Client> generateClientsReport(int count, float value){
+    public List<Client> generateClientsReport(int minOrders, float minPrice){
         List<Client> filteredClients = new ArrayList<>();
-        orders.keySet().stream().filter(entry-> entry.getTotalPrice() >= value).forEach(e-> filteredClients.add(findClientById(e.getClientId())));
-        return filteredClients.stream().distinct().filter(e-> e.getNumberOfOrders() >= count).collect(toList());
+        orders.keySet().stream().filter(entry -> entry.getTotalPrice() >= minPrice).forEach(e -> filteredClients.add(findClientById(e.getClientId())));
+        return filteredClients.stream().distinct().filter(e -> e.getNumberOfOrders() >= minOrders).collect(toList());
     }
 
     public List<MenuItem> generateReportByDateAndTimesOrdered(LocalDate date, int numberOfTimes){
         List<MenuItem> filteredList = new ArrayList<>();
         List<MenuItem> result = new ArrayList<>();
-        orders.entrySet().stream().filter(entry-> entry.getKey().getDate().isAfter(date)).forEach(e->e.getValue().stream().filter(k->k.getTimesOrdered() >= numberOfTimes).forEach(k->filteredList.add(k)));
+        orders.entrySet().stream().filter(entry -> entry.getKey().getDate().isAfter(date)).forEach(e -> e.getValue().stream().filter(k -> k.getTimesOrdered() >= numberOfTimes).forEach(k -> filteredList.add(k)));
         for(MenuItem item : filteredList){
             if(!result.contains(item)){
                 result.add(item);
@@ -116,15 +118,18 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
 
     // Client tasks
     @Override
-    public int newOrder(Client client, Order order, List<MenuItem> orderedProducts) {
+    public int newOrder(Client client, List<MenuItem> orderedProducts) {
+        Order order = new Order();
         order.setId(orders.size() + 1);
         client.addOrder(order);
+        client.incTimesOrdered();
         order.placeOrder();
         orders.put(order, orderedProducts);
 
         int totalPrice = 0;
         for(MenuItem item: orderedProducts){
             totalPrice += item.getPrice();
+            item.incTimesOrdered();
         }
 
         order.setTotalPrice(totalPrice);
@@ -165,4 +170,12 @@ public class DeliveryService implements Serializable, IDeliveryServiceProcessing
         }
     }
 
+    public MenuItem findById(int id){
+        for(MenuItem item:menuItems){
+            if(item.getId() == id){
+                return item;
+            }
+        }
+        return null;
+    }
 }

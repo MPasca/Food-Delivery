@@ -16,7 +16,7 @@ public class Bill implements Serializable {
             FileWriter billWriter = new FileWriter("Bill #" + order.getId() + ".txt");
 
             billWriter.write("Order #" + order.getId() + "\n");
-            billWriter.write(formatter.format(order.getDate()) + "\n");
+            billWriter.write(formatter.format(order.getDateTime()) + "\n");
             billWriter.write("_______________________________\n");
 
             billWriter.write("Client #" + client.getId() + "\n");

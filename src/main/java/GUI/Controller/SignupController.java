@@ -7,6 +7,8 @@ import Model.Client;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SignupController implements Controller{
     private static SignupController signupController = new SignupController();
@@ -22,6 +24,15 @@ public class SignupController implements Controller{
         deliveryService = DeliveryService.getInstance();
 
         signupView.btnSignup.addActionListener(new SignupListener());
+
+        final CloseAction closeAction = new CloseAction(signupView.frameSignup);
+        signupView.frameSignup.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeAction.confirmClosing();
+            }
+        });
+
     }
 
     @Override

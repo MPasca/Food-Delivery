@@ -8,6 +8,7 @@ public class Client extends User {
     private final String lastName;
     private final String deliveryAddress;
     private final String telephoneNumber;
+    private int timesOrdered = 0;
 
     private List<Order> orderList = new ArrayList<>();
 
@@ -17,6 +18,14 @@ public class Client extends User {
         this.lastName = lastName;
         this.deliveryAddress = deliveryAddress;
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public void incTimesOrdered(){
+        timesOrdered++;
+    }
+
+    public int getNumberOfOrders() {
+        return timesOrdered;
     }
 
     public void changePassword(String newPassword){

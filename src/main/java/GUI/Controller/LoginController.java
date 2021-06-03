@@ -22,6 +22,8 @@ public class LoginController implements Controller{
     public LoginView loginView;
     private DeliveryService deliveryService;
 
+    public Client currentClient = null;
+
     public LoginController(){
 
         this.loginView = LoginView.getInstance();
@@ -59,7 +61,6 @@ public class LoginController implements Controller{
         }
 
         List<Client> clients = deliveryService.getClients();
-        Client currentClient = null;
         for(Client client: clients){
             if(client.getUsername().equals(username)){
                 currentClient = client;
@@ -108,35 +109,6 @@ public class LoginController implements Controller{
             SignupController signupController = SignupController.getInstance();
             loginView.frameMain.setVisible(false);
             signupController.signupView.frameSignup.setVisible(true);
-        }
-    }
-
-    class CloseAction extends AbstractAction {
-        private JFrame mainFrame;
-
-        public CloseAction(JFrame mainFrame) {
-            super("Exit");
-            putValue(MNEMONIC_KEY, KeyEvent.VK_X);
-            this.mainFrame = mainFrame;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            confirmClosing();
-        }
-
-        public void confirmClosing() {
-            int confirmed = JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to quit?", "Confirm quit", JOptionPane.YES_NO_OPTION);
-            if (confirmed == JOptionPane.YES_OPTION) {
-                Serialization serialization = Serialization.getInstance();
-                try {
-                    serialization.exportData(deliveryService);
-                    System.out.println("serialization ended");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                System.exit(0);
-            }
         }
     }
 }

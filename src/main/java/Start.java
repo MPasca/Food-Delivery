@@ -1,5 +1,7 @@
 import Bussiness.DeliveryService;
 import Data.Serialization;
+import GUI.Controller.AdminController;
+import GUI.Controller.ClientController;
 import GUI.Controller.LoginController;
 import Model.*;
 
@@ -13,6 +15,7 @@ public class Start {
 
         DeliveryService deliveryService = DeliveryService.getInstance();
 
+        // local variable - THAT'S FUCKNG WHY
         try {
             deliveryService = serialization.importData();
         } catch (IOException e) {
@@ -22,6 +25,11 @@ public class Start {
         }
 
         LoginController.getInstance();
+        //AdminController.getInstance();
+        //ClientController.getInstance();
+    }
+        /*
+
 
         for(MenuItem prod: deliveryService.fetchMenuItems()){
             System.out.println(prod.toString());
@@ -57,5 +65,6 @@ public class Start {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+
+         */
 }

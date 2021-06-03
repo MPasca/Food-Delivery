@@ -13,6 +13,8 @@ public abstract class MenuItem implements Serializable {
     protected int sodium;
     protected double price;
 
+    protected int timesOrdered = 0;
+
     public MenuItem(String title, double price){
         this.title = title;
         this.price = price;
@@ -26,6 +28,10 @@ public abstract class MenuItem implements Serializable {
         this.protein = protein;
         this.fat = fat;
         this.sodium = sodium;
+    }
+
+    public void incTimesOrdered(){
+        timesOrdered++;
     }
 
     public String getTitle() {
@@ -67,6 +73,6 @@ public abstract class MenuItem implements Serializable {
     public abstract String toString();
 
     public int getTimesOrdered(){
-        return 0;
+        return timesOrdered;
     }
 }
